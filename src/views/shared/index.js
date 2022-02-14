@@ -5,3 +5,8 @@ export const Wrapper = styled.div`
   padding: 1em;
   border: 1px solid blue;
 `
+
+export const Label = styled.label`
+  font-size: 1em;
+  font-weight: 600;
+`;

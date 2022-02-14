@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Wrapper } from '../views/shared/Wrapper';
+import { Wrapper, Label } from '../views/shared';
 import { DatePicker } from 'antd';
-import { Label } from '../views/shared/Label';
+import SearchInput from './SearchInput/SearchInput';
 
 const SearchController = () => (
   <Wrapper>
@@ -11,9 +11,9 @@ const SearchController = () => (
     <Label>종료일자</Label>
     <DatePicker />
     <Label>카테고리</Label>
-    <select />
+    <SearchInput />
     <Label>키워드</Label>
-    <select />
+    <SearchInput />
   </Wrapper>
 );
 
