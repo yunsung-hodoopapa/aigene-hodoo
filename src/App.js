@@ -1,7 +1,10 @@
 import './App.css';
+import SearchController from './components/SearchController';
 
-function App() {
-  return <div className="App"></div>;
-}
+const App = () => (
+  <>
+    <SearchController />
+  </>
+);
 
 export default App;
