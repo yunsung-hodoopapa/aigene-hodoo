@@ -1,20 +1,31 @@
-import React from 'react';
+import { set } from 'date-fns';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Wrapper, Label } from '../views/shared';
-import { DatePicker } from 'antd';
+import DatePickerComponent from './DatePicker';
 import SearchInput from './SearchInput/SearchInput';
 
-const SearchController = () => (
-  <Wrapper>
-    <Label>시작일자</Label>
-    <DatePicker />
-    <Label>종료일자</Label>
-    <DatePicker />
-    <Label>카테고리</Label>
-    <SearchInput />
-    <Label>키워드</Label>
-    <SearchInput />
-  </Wrapper>
-);
+const SearchController = () => {
+  const [isRangeSearch, setIsRangeSearch] = useState(false);
+  const [dateInput, setDateInput] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+
+  return (
+    <Wrapper>
+      <DatePickerComponent
+        isRangeSearch={isRangeSearch}
+        setIsRangeSearch={setIsRangeSearch}
+        dateInput={dateInput}
+        setDateInput={setDateInput}
+      />
+      <Label>카테고리</Label>
+      <SearchInput />
+      <Label>키워드</Label>
+      <SearchInput />
+    </Wrapper>
+  );
+};
 
 export default SearchController;
