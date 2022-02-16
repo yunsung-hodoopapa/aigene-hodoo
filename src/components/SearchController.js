@@ -12,6 +12,8 @@ const SearchController = () => {
     endDate: new Date(),
   });
 
+  console.log(dateInput);
+
   return (
     <Wrapper>
       <DatePickerComponent
