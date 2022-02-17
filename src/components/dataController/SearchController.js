@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Wrapper, Label } from '../../views/shared/index';
-import DatePickerComponent from './DatePicker';
-import SearchInput from './SearchInput/SearchInput';
-import CheckBox from './CheckBox';
+import CheckBox from './CheckBox/CheckBox';
+import KeywordContainer from './Keyword/KeywordContainer';
 
 const ControllerWrapper = styled.div`
   display: flex;
@@ -13,38 +11,18 @@ const ControllerWrapper = styled.div`
   justify-content: center;
 `;
 
-const SearchController = () => {
-  const [isRangeSearch, setIsRangeSearch] = useState(false);
-  const [dateInput, setDateInput] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-  });
+const DataController = () => {
   const [checkedItems, setCheckedItems] = useState([]);
 
   return (
     <ControllerWrapper>
-      <Wrapper>
-        <DatePickerComponent
-          isRangeSearch={isRangeSearch}
-          setIsRangeSearch={setIsRangeSearch}
-          dateInput={dateInput}
-          setDateInput={setDateInput}
-        />
-      </Wrapper>
-      <Wrapper>
-        <Label>키워드</Label>
-        <SearchInput />
-        <Label>키워드</Label>
-        <SearchInput />
-      </Wrapper>
-      <Wrapper>
-        <CheckBox
-          checkedItems={checkedItems}
-          setCheckedItems={setCheckedItems}
-        />
-      </Wrapper>
+      <KeywordContainer />
+      <CheckBox
+        checkedItems={checkedItems}
+        setCheckedItems={setCheckedItems}
+      />
     </ControllerWrapper>
   );
 };
 
-export default SearchController;
+export default DataController;

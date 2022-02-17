@@ -7,7 +7,7 @@ const TempBlock = styled.div`
   width: 50%;
   background-color: white;
   border: 1px solid green;
-`
+`;
 
 const App = () => (
   <>

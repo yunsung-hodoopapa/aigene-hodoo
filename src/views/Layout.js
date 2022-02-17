@@ -7,7 +7,6 @@ const Section = styled.div`
   max-height: 1080px;
   min-height: 720px;
   min-width: 1024px;
-  background-color: Grey;
 `;
 
 const Layout = (props) => {

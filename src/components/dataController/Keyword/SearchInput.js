@@ -2,6 +2,15 @@ import { AirlineSeatFlat } from '@material-ui/icons';
 import { AiOutlineClose } from 'react-icons/ai';
 import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setKeyword,
+  setResults,
+  eraseResult,
+  setTagContainer,
+  deleteTag,
+  removeTag,
+} from '../../../redux/keyword';
 
 const Wrapper = styled.div`
   display:flex;
@@ -9,7 +18,6 @@ const Wrapper = styled.div`
   jusitify-content: center;
   wrap: no-wrap:
   width: 70%;
-  border: 1px solid tomato;
 `;
 
 const HashTagWrapper = styled.div`
@@ -37,11 +45,10 @@ const Input = styled.input`
   background-color: #ffffff;
   outline: none;
   font-size: 1em;
-  z-index: 100;
 `;
 
 const ResultContainer = styled.div`
-  border: 1px solid tomato;
+  border: 1px solid grey;
   background-color: #ffffff;
   z-index: 100;
 `;
@@ -68,28 +75,30 @@ const CloseBtnWrap = styled.div`
 `;
 
 const SearchInput = () => {
+  const keywordState = useSelector((state) => state.keyword);
+  const dispatch = useDispatch();
   const [keyword, setKeyword] = useState('');
-  const [results, setResults] = useState([]);
-  const [tagContainer, setTagContainer] = useState([]);
 
   const handleUserInput = useCallback(
     (keyword) => {
       setKeyword(keyword);
-      setResults([]);
+      dispatch(eraseResult());
     },
     [keyword]
   );
 
   const handleKeyword = (keyword) => {
-    setTagContainer([...tagContainer, keyword]);
-    setResults([]);
+    dispatch(setTagContainer(keyword));
+    dispatch(eraseResult());
     setKeyword('');
   };
 
   const searchResultHandler = (keyword) => {
     const data = ['패션', '생활', '맛집', '카페']; // 예제
     const matched = data.filter((item) => matchItem(item, keyword));
-    setResults(matched);
+    if (matched.length > 0) {
+      dispatch(setResults(matched));
+    }
   };
 
   const matchItem = (item, keyword) => {
@@ -105,9 +114,9 @@ const SearchInput = () => {
     }
   };
 
-  const renderResults = results.map((item, index) => {
+  const renderResults = keywordState.results.map((item, index) => {
     return (
-      <ul>
+      <ul key={index}>
         <Result key={index} item={item} onClick={() => handleKeyword(item)}>
           {item}
         </Result>
@@ -118,17 +127,21 @@ const SearchInput = () => {
   const handlekeyEventHandler = (e) => {
     if (e.keyCode === 13) {
       searchResultHandler(keyword);
-      setTagContainer([...tagContainer, keyword]);
+      setTagContainer(keyword);
       setKeyword('');
     }
-    if (tagContainer.length && e.keyCode === 8 && !keyword.length) {
-      setTagContainer(tagContainer.slice(0, tagContainer.length - 1));
+    if (
+      keywordState.tagContainer.length &&
+      e.keyCode === 8 &&
+      !keyword.length
+    ) {
+      dispatch(removeTag());
     }
   };
 
-  const handleRemoveTag = (index) => {
-    setTagContainer(tagContainer.filter((item, i) => i !== index));
-  };
+  // const handleRemoveTag = (index) => {
+  //  ;
+  // };
 
   useEffect(() => {
     searchResultHandler(keyword);
@@ -137,14 +150,15 @@ const SearchInput = () => {
   return (
     <Wrapper>
       <HashTagWrapper>
-        {tagContainer.map((item, index) => {
+        {keywordState.tagContainer.map((item, index) => {
           return (
-            <TagHolder key={index} onClick={() => handleRemoveTag(index)}>
+            <TagHolder key={index} onClick={() => dispatch(deleteTag(index))}>
               {item}
               <CloseBtnWrap>
                 <AiOutlineClose
+                  item={item}
                   index={index}
-                  onClick={(index) => handleRemoveTag(index)}
+                  onClick={() => dispatch(deleteTag(index))}
                 />
               </CloseBtnWrap>
             </TagHolder>
@@ -158,9 +172,9 @@ const SearchInput = () => {
           onkeyDown={handlekeyEventHandler}
         />
       </HashTagWrapper>
-      {results.length > 0 ? (
+      {keywordState.results.length > 0 && (
         <ResultContainer>{renderResults}</ResultContainer>
-      ) : null}
+      )}
     </Wrapper>
   );
 };
