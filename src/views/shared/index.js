@@ -5,7 +5,6 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 1em;
-  border: 1px solid blue;
 `;
 
 export const Label = styled.label`

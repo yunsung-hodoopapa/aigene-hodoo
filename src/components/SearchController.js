@@ -23,7 +23,9 @@ const SearchController = () => {
           dateInput={dateInput}
           setDateInput={setDateInput}
         />
-        <Label>카테고리</Label>
+      </Wrapper>
+      <Wrapper>
+        <Label>키워드</Label>
         <SearchInput />
         <Label>키워드</Label>
         <SearchInput />
