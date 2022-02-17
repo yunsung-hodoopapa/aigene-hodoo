@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Wrapper, Label } from '../views/shared';
 import DatePickerComponent from './DatePicker';
 import SearchInput from './SearchInput/SearchInput';
+import CheckBox from './CheckBox';
 
 const SearchController = () => {
   const [isRangeSearch, setIsRangeSearch] = useState(false);
@@ -11,22 +12,26 @@ const SearchController = () => {
     startDate: new Date(),
     endDate: new Date(),
   });
-
-  console.log(dateInput);
+  const [checkedItems, setCheckedItems] = useState([]);
 
   return (
-    <Wrapper>
-      <DatePickerComponent
-        isRangeSearch={isRangeSearch}
-        setIsRangeSearch={setIsRangeSearch}
-        dateInput={dateInput}
-        setDateInput={setDateInput}
-      />
-      <Label>카테고리</Label>
-      <SearchInput />
-      <Label>키워드</Label>
-      <SearchInput />
-    </Wrapper>
+    <>
+      <Wrapper>
+        <DatePickerComponent
+          isRangeSearch={isRangeSearch}
+          setIsRangeSearch={setIsRangeSearch}
+          dateInput={dateInput}
+          setDateInput={setDateInput}
+        />
+        <Label>카테고리</Label>
+        <SearchInput />
+        <Label>키워드</Label>
+        <SearchInput />
+      </Wrapper>
+      <Wrapper>
+        <CheckBox checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
+      </Wrapper>
+    </>
   );
 };
 
