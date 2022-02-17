@@ -1,10 +1,17 @@
-import { set } from 'date-fns';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Wrapper, Label } from '../views/shared';
+import { Wrapper, Label } from '../../views/shared/index';
 import DatePickerComponent from './DatePicker';
 import SearchInput from './SearchInput/SearchInput';
 import CheckBox from './CheckBox';
+
+const ControllerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+  justify-content: center;
+`;
 
 const SearchController = () => {
   const [isRangeSearch, setIsRangeSearch] = useState(false);
@@ -15,7 +22,7 @@ const SearchController = () => {
   const [checkedItems, setCheckedItems] = useState([]);
 
   return (
-    <>
+    <ControllerWrapper>
       <Wrapper>
         <DatePickerComponent
           isRangeSearch={isRangeSearch}
@@ -31,9 +38,12 @@ const SearchController = () => {
         <SearchInput />
       </Wrapper>
       <Wrapper>
-        <CheckBox checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
+        <CheckBox
+          checkedItems={checkedItems}
+          setCheckedItems={setCheckedItems}
+        />
       </Wrapper>
-    </>
+    </ControllerWrapper>
   );
 };
 

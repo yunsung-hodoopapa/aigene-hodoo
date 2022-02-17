@@ -82,9 +82,9 @@ const SearchInput = () => {
 
   const handleKeyword = (keyword) => {
     setTagContainer([...tagContainer, keyword]);
-    setResults([])
-    setKeyword('')
-  }
+    setResults([]);
+    setKeyword('');
+  };
 
   const searchResultHandler = (keyword) => {
     const data = ['패션', '생활', '맛집', '카페']; // 예제

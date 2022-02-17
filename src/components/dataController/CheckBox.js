@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Wrapper } from '../views/shared';
-import { TIMEUNIT, DEVICE, AGE, GENDER } from '../constants/index';
+import { Wrapper } from '../../views/shared';
+import { TIMEUNIT, DEVICE, AGE, GENDER } from '../../constants/index';
 
 const CheckBoxWrapper = styled.div`
   display: flex;
@@ -22,7 +22,6 @@ const FlexBlock = styled.div`
 `;
 
 const CheckBox = ({ checkedItems, setCheckedItems }) => {
-
   const handleSingleCheck = (checked, id) => {
     if (checked) {
       setCheckedItems([...checkedItems, id]);
