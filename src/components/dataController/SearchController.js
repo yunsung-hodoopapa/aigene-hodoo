@@ -4,6 +4,7 @@ import CheckBox from './CheckBox/CheckBox';
 import KeywordContainer from './Keyword/KeywordContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { addData } from '../../redux/data';
+
 const ControllerWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -23,8 +24,6 @@ const DataController = () => {
       dataState: state.data,
     })
   );
-
-  console.log(dataState);
 
   const getTimeToString = (date) => {
     const toCalendarData = new Date(date);
@@ -63,7 +62,9 @@ const DataController = () => {
   };
 
   const checkAgeOption = () => {
-    return checkBoxState.age.map((item) => item.toString());
+    if (checkBoxState.age.length >= 1) {
+      return checkBoxState.age.map((item) => item.toString());
+    }
   };
 
   const requestBody = {
