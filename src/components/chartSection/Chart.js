@@ -15,7 +15,13 @@ const Chart = () => {
   const dataset = dataState.map((item) => item.results[0].data).flat();
   const period = dataset.map((item) => item.period);
   const ratio = dataset.map((item) => item.ratio);
-  const age = `${dataset[0].group}대`
+  const age = () => {
+    if (dataset.length) {
+      return `${dataset[0].group}대`;
+    } else {
+      return '연령대';
+    }
+  };
   console.log(period);
   return (
     <ControllerWrapper>
@@ -24,7 +30,7 @@ const Chart = () => {
           labels: period,
           datasets: [
             {
-              label: age,
+              label: age(),
               data: ratio,
               fill: false,
               borderColor: 'rgb(75, 192, 192)',
