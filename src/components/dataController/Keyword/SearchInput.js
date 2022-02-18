@@ -1,15 +1,11 @@
-import { AirlineSeatFlat } from '@material-ui/icons';
-import { AiOutlineClose } from 'react-icons/ai';
 import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setKeyword,
+  setCategory,
   setResults,
   eraseResult,
-  setTagContainer,
-  deleteTag,
-  removeTag,
 } from '../../../redux/keyword';
 
 const Wrapper = styled.div`
@@ -20,30 +16,18 @@ const Wrapper = styled.div`
   width: 70%;
 `;
 
-const HashTagWrapper = styled.div`
+const InputWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border: 1px solid grey;
   border-radius: 4px;
-`;
-
-const TagHolder = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 1.5em;
-  line-height: 20px;
-  margin-right: 5px;
-  padding: 3px;
-  background-color: grey;
-  border-radius: 5px;
-  font-size: 1em;
 `;
 
 const Input = styled.input`
   background-color: #ffffff;
   outline: none;
+  border: none;
   font-size: 1em;
 `;
 
@@ -59,53 +43,52 @@ const Result = styled.li`
   list-style: none;
 `;
 
-const CloseBtnWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 0.8em;
-  height: 0.8em;
-  margin-left: 10px;
-  background-color: grey;
-  border: none;
-  border-radius: 50%;
-  :hover {
-    background-color: #d3959b;
-  }
-`;
-
 const SearchInput = () => {
   const keywordState = useSelector((state) => state.keyword);
   const dispatch = useDispatch();
-  const [keyword, setKeyword] = useState('');
+  const [inputValue, setInputValue] = useState('');
 
   const handleUserInput = useCallback(
-    (keyword) => {
-      setKeyword(keyword);
+    (e) => {
+      setInputValue(e.target.value);
       dispatch(eraseResult());
     },
-    [keyword]
+    [inputValue]
   );
 
-  const handleKeyword = (keyword) => {
-    dispatch(setTagContainer(keyword));
+  const handleKeyword = useCallback(
+    (e) => {
+      dispatch(setKeyword(e.target.value));
+    },
+    [dispatch]
+  );
+
+  const handleInputValue = (inputValue) => {
+    const regex = /[^0-9]/g;
+    const categoryNum = inputValue.toString().replace(regex, '');
+    dispatch(setCategory(categoryNum));
     dispatch(eraseResult());
-    setKeyword('');
+    setInputValue(keywordState.category);
   };
 
   const searchResultHandler = (keyword) => {
-    const data = ['패션', '생활', '맛집', '카페']; // 예제
-    const matched = data.filter((item) => matchItem(item, keyword));
+    const data = [
+      '핸드메이드코트(50000813)',
+      '남성코트(50000839)',
+      '스킨토너(50000437)',
+      '트레이닝복(50000841)',
+    ];
+    const matched = data.filter((item) => matchItem(item, inputValue));
     if (matched.length > 0) {
       dispatch(setResults(matched));
     }
   };
 
-  const matchItem = (item, keyword) => {
-    const matchedNum = keyword
+  const matchItem = (item, inputValue) => {
+    const matchedNum = inputValue
       .toLowerCase()
-      .indexOf(item.toLowerCase().substring(0, keyword.length));
-    if (keyword === '') {
+      .indexOf(item.toLowerCase().substring(0, inputValue.length));
+    if (inputValue === '') {
       return false;
     } else {
       if (matchedNum >= 0) {
@@ -117,64 +100,39 @@ const SearchInput = () => {
   const renderResults = keywordState.results.map((item, index) => {
     return (
       <ul key={index}>
-        <Result key={index} item={item} onClick={() => handleKeyword(item)}>
+        <Result key={index} item={item} onClick={() => handleInputValue(item)}>
           {item}
         </Result>
       </ul>
     );
   });
 
-  const handlekeyEventHandler = (e) => {
-    if (e.keyCode === 13) {
-      searchResultHandler(keyword);
-      setTagContainer(keyword);
-      setKeyword('');
-    }
-    if (
-      keywordState.tagContainer.length &&
-      e.keyCode === 8 &&
-      !keyword.length
-    ) {
-      dispatch(removeTag());
-    }
-  };
-
-  // const handleRemoveTag = (index) => {
-  //  ;
-  // };
-
   useEffect(() => {
-    searchResultHandler(keyword);
-  }, [keyword]);
+    searchResultHandler(inputValue);
+  }, [inputValue]);
 
   return (
     <Wrapper>
-      <HashTagWrapper>
-        {keywordState.tagContainer.map((item, index) => {
-          return (
-            <TagHolder key={index} onClick={() => dispatch(deleteTag(index))}>
-              {item}
-              <CloseBtnWrap>
-                <AiOutlineClose
-                  item={item}
-                  index={index}
-                  onClick={() => dispatch(deleteTag(index))}
-                />
-              </CloseBtnWrap>
-            </TagHolder>
-          );
-        })}
+      <InputWrapper>
         <Input
           type="text"
-          onChange={(e) => handleUserInput(e.target.value)}
-          value={keyword}
+          onChange={handleUserInput}
+          value={inputValue}
           placeholder={'Category'}
-          onkeyDown={handlekeyEventHandler}
         />
-      </HashTagWrapper>
+      </InputWrapper>
       {keywordState.results.length > 0 && (
         <ResultContainer>{renderResults}</ResultContainer>
       )}
+      <br />
+      <InputWrapper>
+        <Input
+          type="text"
+          onChange={handleKeyword}
+          value={keywordState.keyword}
+          placeholder={'키워드'}
+        />
+      </InputWrapper>
     </Wrapper>
   );
 };

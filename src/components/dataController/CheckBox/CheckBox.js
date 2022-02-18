@@ -38,7 +38,7 @@ const FlexBlock = styled.div`
   display: flex;
 `;
 
-const CheckBox = ({ checkedItems, setCheckedItems }) => {
+const CheckBox = () => {
   const checkBoxState = useSelector((state) => state.checkBox);
   const dispatch = useDispatch();
 
@@ -68,7 +68,7 @@ const CheckBox = ({ checkedItems, setCheckedItems }) => {
 
   const handleAgeUnitChecked = (checked, item, index) => {
     if (checked) {
-      dispatch(setAge(item));
+      dispatch(setAge((index+1)*10));
     } else {
       dispatch(unCheckAgeUnit(index));
     }
@@ -120,8 +120,10 @@ const CheckBox = ({ checkedItems, setCheckedItems }) => {
               <div key={index}>
                 <input
                   type="checkbox"
-                  onChange={(e) => handleAgeUnitChecked(e.target.checked, item, index)}
-                  checked={checkBoxState.age.includes(item) ? true : false}
+                  onChange={(e) =>
+                    handleAgeUnitChecked(e.target.checked, item, index)
+                  }
+                  checked={checkBoxState.age.includes((index+1)*10) ? true : false}
                   id={item}
                   key={index}
                 />

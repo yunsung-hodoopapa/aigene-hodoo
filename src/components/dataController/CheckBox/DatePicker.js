@@ -6,22 +6,23 @@ import { Wrapper } from '../../../views/shared';
 import { ArrowDropUp, ArrowDropDown } from '@material-ui/icons';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStartDate, setEndDate } from '../../../redux/day';
+import { setStartDate, setEndDate } from '../../../redux/date.js';
 
 const DatePickerWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20vw;
+  width: 40vw;
+  min-width: 20vw;
   border: 1px solid grey;
   border-radius: 1em;
+  wrap: no-wrap;
 `;
 
 const CalendarWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10vw;
 `;
 
 const DatePickerComponent = () => {
@@ -50,13 +51,6 @@ const DatePickerComponent = () => {
     );
   };
 
-  const makeDate = (date) => {
-    const toCalendarData = new Date(date);
-    return `${toCalendarData.getFullYear()}-${
-      toCalendarData.getMonth() + 1
-    }-${toCalendarData.getDate()}`;
-  };
-
   const CustomInput = ({ value, onClick }) => (
     <CalendarWrap onClick={onClick}>
       {value}
@@ -74,6 +68,7 @@ const DatePickerComponent = () => {
           customInput={<CustomInput />}
           dateFormat="yyyy.MM.dd"
           locale={ko}
+          popperPlacement="bottom-end"
         />
         {dateState.isRangeSearch && (
           <ReactDatePicker
